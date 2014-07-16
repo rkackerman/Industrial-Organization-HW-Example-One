@@ -1,0 +1,94 @@
+---------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/robertackerman/Desktop/Dropbox/Econ 890-2/HW2_Ackerman.log
+  log type:  text
+ opened on:   7 Feb 2014, 16:30:26
+
+. 
+. set more off
+
+. pause on 
+
+. 
+. **** Load, re-name and re-shape data   ****
+. import delimited "/Users/robertackerman/Documents/MATLAB/STATA_data.csv", case(upper) 
+(7 vars, 1000 obs)
+
+. 
+. rename (V1 V2 V3 V4 V5 V6 V7) (M J X W P Q S0)
+
+. gen S = Q/1000000
+
+. gen logS = log(S/S0)
+
+. xtset J M
+       panel variable:  J (strongly balanced)
+        time variable:  M, 1 to 500
+                delta:  1 unit
+
+. 
+. 
+. **** OLS  Estimates ****
+. xtreg logS X P, vce(robust)
+
+Random-effects GLS regression                   Number of obs      =      1000
+Group variable: J                               Number of groups   =         2
+
+R-sq:  within  = 0.5728                         Obs per group: min =       500
+       between = 1.0000                                        avg =     500.0
+       overall = 0.5726                                        max =       500
+
+                                                Wald chi2(1)       =         .
+corr(u_i, X)   = 0 (assumed)                    Prob > chi2        =         .
+
+                                      (Std. Err. adjusted for 2 clusters in J)
+------------------------------------------------------------------------------
+             |               Robust
+        logS |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           X |   1.234153   .0693933    17.78   0.000     1.098145    1.370162
+           P |  -.6207812   .0364495   -17.03   0.000    -.6922209   -.5493416
+       _cons |   3.113179   .2015912    15.44   0.000     2.718067     3.50829
+-------------+----------------------------------------------------------------
+     sigma_u |          0
+     sigma_e |  .84455511
+         rho |          0   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. 
+. **** 2SLS  Estimates ****
+. xtivreg logS X (P = W) 
+
+G2SLS random-effects IV regression              Number of obs      =      1000
+Group variable: J                               Number of groups   =         2
+
+R-sq:  within  = 0.5725                         Obs per group: min =       500
+       between = 1.0000                                        avg =     500.0
+       overall = 0.5723                                        max =       500
+
+                                                Wald chi2(2)       =    389.99
+corr(u_i, X)       = 0 (assumed)                Prob > chi2        =    0.0000
+
+------------------------------------------------------------------------------
+        logS |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           P |  -.9789548   .0498066   -19.66   0.000    -1.076574   -.8813356
+           X |   1.910689   .0994194    19.22   0.000     1.715831    2.105548
+       _cons |   4.911809   .2521693    19.48   0.000     4.417566    5.406051
+-------------+----------------------------------------------------------------
+     sigma_u |          0
+     sigma_e |  1.0143251
+         rho |          0   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+Instrumented:   P
+Instruments:    X W
+------------------------------------------------------------------------------
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/robertackerman/Desktop/Dropbox/Econ 890-2/HW2_Ackerman.log
+  log type:  text
+ closed on:   7 Feb 2014, 16:30:27
+---------------------------------------------------------------------------------------------------------------------

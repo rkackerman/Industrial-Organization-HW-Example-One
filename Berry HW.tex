@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+%\usepackage{amsmath, amsthm, enumerate, graphicx, bm, type1cm, amssymb}
+
+\usepackage{amsmath,amsthm,enumerate,graphicx,bm,type1cm,amssymb,epsfig,lscape,setspace,amssymb,url,color,tabu,xcolor,colortbl,rotating,tikz,pdfpages}
+
+
+\bibliographystyle{econometrica}
+
+%\usepackage{amsmath, amsthm, enumerate, graphicx, bm, type1cm, amssymb, natbib, remreset}
+%\usepackage{natbib}
+%\usepackage{setspace}
+\theoremstyle{definition}
+\newtheorem{mc}{MC}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{pr}{Proof}
+
+\newtheorem{assump}{Assumption}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+% \def\stackunder#1#2{\mathrel{\mathop{#2}\limits_{#1}}}
+% \renewcommand{\theequation}{\thesection.\arabic{equation}}
+\newtheorem{corol}{Corollary}[section]
+\newcommand{\argmax}{\mathop{\rm \textit{arg} \ \textit{max}}\limits}
+\newcommand{\argmin}{\mathop{\rm \textit{arg} \ \textit{min}}\limits}
+
+\newcommand{\vecop}{{\rm vec}}
+\newcommand{\E}{{\rm E}}
+\newcommand{\Var}{{\rm Var}}
+\newcommand{\determinant}{{\rm det}}
+\newcommand{\tr}{{\rm tr}}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\def\inprob{\stackrel{p}{\rightarrow}}
+\def\ninprob{\stackrel{p}{\nrightarrow}}
+\def\indist{\stackrel{d}{\rightarrow}}
+\def\nindist{\stackrel{d}{\nrightarrow}}
+\def\as{\stackrel{a.s.}{\rightarrow}}
+\def\betahn{\hat{\beta}_{n}}
+\def\betao{\beta^{0}}
+\def\sumin{\sum_{i=1}^{n}}
+\def\sumjn{\sum_{i=1}^{n}}
+\def\thetahn{\hat{\theta}_{n}}
+\def\Ho{$H_{0} \ : \ a(\beta^{0})=0$}
+\def\abhat{$a(\hat{\beta})$}
+\def\abo{$a(\beta^{0})$}
+\def\Abbar{$A(\bar{\beta})$}
+\def\bhat{$\hat{\beta}$}
+\def\bo{$\beta^{0}$}
+
+\setlength{\oddsidemargin}{5mm}
+\setlength{\textwidth}{16cm}
+\setlength{\topmargin}{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\textheight}{23cm}
+\onehalfspacing
+
+\definecolor{Gray}{gray}{0.85}
+
+\title{Homework 2: Berry (1994)}
+\author{Robert Ackerman}
+% activate to footnote\thanks{Excuse all mistakes.  First attempt at LaTex. E-mail: \texttt{%
+%rkackerm@live.unc.edu}} }
+\date{February 7, 2014}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section*{Submission Details}
+\indent 
+\par
+My submission for this HW contains this document and the following seven additional files:
+
+\vspace{2mm}
+1. "observable\textunderscore data.csv": contains a $1001 \times 6$ matrix in .csv format.  The first row contains the following variable labels: M, J, X, W, P, Q which correspond to market index, firm index, x, w, equilibrium price, and equilibrium quantity  values respectively.   
+
+\vspace{2mm}
+2. "exog\textunderscore data.csv": contains a $1001 \times 6$ matrix in .csv format.  The first row contains the following variable labels: M, J, X, W, Xi, Omega which correspond to market index, firm index, x, w, $\xi$, and $\omega$ values respectively.   
+
+\vspace{2mm}
+3. "Berry HW Main.m": contains a Matlab .m file.  This is the main Matlab file, the execution of which will generate the required data, solve for equilibrium prices, and produce the above files (when the last three lines are uncommented).  Note: the successful execution of this file requires the next file. Further details are provided in comments within the file itself.
+
+\vspace{2mm}
+4. "EQPriceObj.m": contains a Matlab .m file.  This file contains a pair of firm first order conditions to be minimized with respect to prices by utilizing the pre-existing Matlab function 'fsolve' which jointly minimizes vectors of functions in the form $f(x)=0$. Further details are provided in comments within the file itself.
+
+\vspace{2mm}
+5. "STATA\textunderscore data.csv": contains a $1000 \times 7$ matrix in .csv format.  The first row contains the following variable labels: M, J, X, W, P, Q, S0 which correspond to market index, firm index, x, w, equilibrium price, equilibrium quantity, and outside good share values respectively.   This file is required to execute the following  STATA .do file.
+
+\vspace{2mm}
+6. "Berry HW.do": contains a STATA .do file that uses the previous .csv file to replicate Berry's OLS and IV estimates.
+
+\vspace{2mm}
+7. "HW2\textunderscore Ackerman.log": contains a STATA .log file detailing the successful execution of the previous STATA .do file.
+
+
+\section*{STATA Results}
+\indent 
+\par
+The following table contains the results of the replication of Berry's OLS and IV estimates, which correspond to the first four columns of his Table 1 on page 257.
+
+\vspace{2.5mm}
+\noindent
+\begin{center}
+\begin{tabular}{c c c c c}
+\hline\hline
+\multicolumn{5}{c}{\textbf{Monte Carlo Parameter Estimates of 500 Duopoly Markets}} \\
+\hline\hline 
+ &  & \multicolumn{2}{c}{\underline{($\sigma_{\xi d}=1$)}} \\
+ & & (1) & (2) \\
+Parameter & True Value & OLS & IV \\ 
+\hline
+$\beta_0$ & 5 & 3.11 & 4.91  \\
+ & & (0.202) & (0.252) \\
+$\beta_x$ & 2 & 1.23 & 1.91 \\ 
+ & & (0.069) & (0.099)  \\
+$\alpha$ & 1 & 0.62 & 0.979 \\
+ & & (0.036) & (0.050) \\
+\hline\hline
+\end{tabular} 
+\end{center} 
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
